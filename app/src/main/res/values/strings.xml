@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">French Dominoe Scroreboard</string>
+    <string name="add_player">Add Player</string>
+    <string name="clear_list">Clear List</string>
+    <string name="start_game">Start Game</string>
+    <string name="title_activity_score">ScoreBoard</string>
+    <string name="plus_10">+10</string>
+    <string name="add_players">Add Players</string>
+</resources>
