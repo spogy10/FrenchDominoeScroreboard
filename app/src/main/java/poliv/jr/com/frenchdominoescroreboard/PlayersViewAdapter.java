@@ -1,8 +1,8 @@
 package poliv.jr.com.frenchdominoescroreboard;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.List;
 
 public class PlayersViewAdapter extends RecyclerView.Adapter<PlayersViewAdapter.ViewHolder> {
+    
 
-    List<String> playersList;
-
-    public PlayersViewAdapter(List playersList) {
-        this.playersList = playersList;
+    public PlayersViewAdapter() {
+        
     }
 
     @NonNull
@@ -33,10 +31,13 @@ public class PlayersViewAdapter extends RecyclerView.Adapter<PlayersViewAdapter.
 
     @Override
     public int getItemCount() {
-        return playersList.size();
+        return ScoreActivity.playerList.length;
     }
 
     public void resetScores(){
+        for (Player p : ScoreActivity.playerList)
+            p.setPoints(0);
+
         notifyDataSetChanged();
     }
 
@@ -57,44 +58,56 @@ public class PlayersViewAdapter extends RecyclerView.Adapter<PlayersViewAdapter.
             btAddToScore = itemView.findViewById(R.id.btPlus);
         }
 
-        protected void onBindView(int position){
-            tvPlayerName.setText(playersList.get(position));
-            tvPlayerScore.setText("0");
+        protected void onBindView(final int position){
+            tvPlayerName.setText(ScoreActivity.playerList[position].getName());
+            setScore(ScoreActivity.playerList[position].getPoints());
 
             btAddToScore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onClickPlusButton();
+                    onClickPlusButton(position);
                 }
             });
 
             btPlus10.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onClickPlus10Button();
+                    onClickPlus10Button(position);
                 }
             });
 
         }
 
-        private void onClickPlusButton(){
+        private void onClickPlusButton(int position){
             if(String.valueOf(etAddToScore.getText()).equals(""))
                 return;
 
-            int score = Integer.parseInt(String.valueOf(tvPlayerScore.getText()));
             int addition = Integer.parseInt(String.valueOf(etAddToScore.getText()));
 
-            score += addition;
+            int score = ScoreActivity.playerList[position].addToPoints(addition);
 
-            tvPlayerScore.setText(String.valueOf(score));
+            setScore(score);
             etAddToScore.setText("");
         }
 
-        private void onClickPlus10Button(){
-            int score = Integer.parseInt(String.valueOf(tvPlayerScore.getText()));
+        private void onClickPlus10Button(int position){
+            int score = ScoreActivity.playerList[position].addToPoints(10);
 
+            setScore(score);
+        }
 
-            score += 10;
+        private void setScore(int score){
+
+            if(score < 25)
+                tvPlayerScore.setTextColor(Color.parseColor("#7be760"));
+            else if(score < 50)
+                tvPlayerScore.setTextColor(Color.parseColor("#E0E144"));
+            else if(score < 75)
+                tvPlayerScore.setTextColor(Color.parseColor("#ffa500"));
+            else if(score < 90)
+                tvPlayerScore.setTextColor(Color.RED);
+            else
+                tvPlayerScore.setTextColor(Color.parseColor("#8b0000"));
 
             tvPlayerScore.setText(String.valueOf(score));
         }

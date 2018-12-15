@@ -9,44 +9,52 @@
     <TextView
         android:id="@+id/tvPlayerName"
         android:textSize="24sp"
-        android:layout_width="140dp"
+        android:layout_width="0dp"
+        android:layout_weight="140"
         android:layout_height="50dp"
         />
 
     <View
-        android:layout_width="10dp"
-        android:layout_height="0dp"/>
+        android:layout_weight="10"
+        android:layout_height="0dp"
+        android:layout_width="0dp"/>
 
     <TextView
         android:id="@+id/tvPlayerScore"
         android:textSize="24sp"
         android:textColor="#7be760"
-        android:layout_width="30dp"
-        android:layout_height="50dp" />
+        android:layout_weight="50"
+        android:layout_height="50dp"
+        android:layout_width="0dp"/>
 
     <View
-        android:layout_width="10dp"
-        android:layout_height="0dp"/>
+        android:layout_weight="10"
+        android:layout_height="0dp"
+        android:layout_width="0dp"/>
 
     <Button
         android:id="@+id/btPlus10"
-        android:layout_width="80dp"
+        android:layout_weight="80"
         android:layout_height="50dp"
+        android:layout_width="0dp"
         android:text="@string/plus_10" />
 
     <View
-        android:layout_width="10dp"
+        android:layout_weight="10"
+        android:layout_width="0dp"
         android:layout_height="0dp"/>
 
     <EditText
         android:id="@+id/etAdd"
         android:inputType="numberSigned"
-        android:layout_width="70dp"
+        android:layout_weight="70"
+        android:layout_width="0dp"
         android:layout_height="50dp" />
 
     <Button
         android:id="@+id/btPlus"
-        android:layout_width="50dp"
+        android:layout_weight="50"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:text="+" />
 

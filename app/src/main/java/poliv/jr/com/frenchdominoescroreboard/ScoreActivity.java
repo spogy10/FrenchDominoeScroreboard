@@ -2,6 +2,7 @@ package poliv.jr.com.frenchdominoescroreboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,13 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ScoreActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     PlayersViewAdapter adapter;
-    List<String> playerList;
+    public static Player[] playerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +29,10 @@ public class ScoreActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
-        playerList = intent.getStringArrayListExtra("List");
+        if( savedInstanceState == null)
+            getPlayerListFromIntent();
+        else
+            getPlayerListFromSavedInstance(savedInstanceState);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -41,12 +46,26 @@ public class ScoreActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager lm = new LinearLayoutManager(this);
 
-        adapter = new PlayersViewAdapter(playerList);
+        adapter = new PlayersViewAdapter();
 
         recyclerView.setLayoutManager(lm);
         recyclerView.setAdapter(adapter);
 
+    }
 
+    private void getPlayerListFromSavedInstance(Bundle savedInstanceState) {
+        Parcelable[] array = savedInstanceState.getParcelableArray("List");
+
+        playerList = (Player[]) array;
+    }
+
+    private void getPlayerListFromIntent() {
+        Intent intent = getIntent();
+        List<String> playerListString = intent.getStringArrayListExtra("List");
+
+        playerList = new Player[playerListString.size()];
+        for(int i = 0; i < playerList.length; i++)
+            playerList[i] = new Player(playerListString.get(i));
 
     }
 
@@ -54,4 +73,9 @@ public class ScoreActivity extends AppCompatActivity {
         adapter.resetScores();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArray("List", playerList);
+        super.onSaveInstanceState(outState);
+    }
 }
